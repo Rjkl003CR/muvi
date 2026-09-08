@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { createClient } from "@/utils/supabase/client";
-import { LogIn, LogOut } from "lucide-react";
+import { LogIn, LogOut, User } from "lucide-react";
 
 export function AuthButton() {
   const [user, setUser] = useState<any>(null);
@@ -41,13 +41,54 @@ export function AuthButton() {
 
   if (user) {
     return (
-      <div className="flex items-center gap-4">
-        <span className="text-sm font-medium">{user.email}</span>
+      <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 8,
+            padding: "6px 12px",
+            borderRadius: 10,
+            background: "var(--bg-card)",
+            border: "1px solid var(--border-color)",
+            fontSize: "0.8rem",
+            fontWeight: 500,
+            color: "var(--text-secondary)",
+            fontFamily: "var(--font-heading)",
+          }}
+        >
+          <User style={{ width: 14, height: 14, color: "var(--accent)" }} />
+          <span style={{ maxWidth: 120, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+            {user.email?.split("@")[0]}
+          </span>
+        </div>
         <button
           onClick={handleSignOut}
-          className="flex items-center gap-2 bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md transition-colors"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 6,
+            background: "transparent",
+            border: "1px solid rgba(239, 68, 68, 0.2)",
+            color: "#ef4444",
+            padding: "7px 14px",
+            borderRadius: 10,
+            cursor: "pointer",
+            fontFamily: "var(--font-heading)",
+            fontWeight: 500,
+            fontSize: "0.8rem",
+            transition: "all var(--transition-base)",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = "rgba(239, 68, 68, 0.08)";
+            e.currentTarget.style.borderColor = "rgba(239, 68, 68, 0.4)";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = "transparent";
+            e.currentTarget.style.borderColor = "rgba(239, 68, 68, 0.2)";
+          }}
         >
-          <LogOut className="w-4 h-4" /> Sign Out
+          <LogOut style={{ width: 14, height: 14 }} /> Sign Out
         </button>
       </div>
     );
@@ -56,9 +97,16 @@ export function AuthButton() {
   return (
     <button
       onClick={handleSignIn}
-      className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md transition-colors"
+      className="btn-primary"
+      style={{
+        display: "flex",
+        alignItems: "center",
+        gap: 8,
+        fontSize: "0.85rem",
+        padding: "9px 20px",
+      }}
     >
-      <LogIn className="w-4 h-4" /> Sign In with Google
+      <LogIn style={{ width: 16, height: 16 }} /> Sign In with Google
     </button>
   );
 }
