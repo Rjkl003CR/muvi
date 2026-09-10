@@ -1,10 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
 import { LogIn, LogOut, User } from "lucide-react";
 
 export function AuthButton() {
+  const router = useRouter();
   const [user, setUser] = useState<any>(null);
   const supabase = createClient();
 
@@ -24,14 +26,8 @@ export function AuthButton() {
     };
   }, [supabase.auth]);
 
-  const handleSignIn = async () => {
-    await supabase.auth.signInWithOAuth({
-      provider: "google",
-      options: {
-        scopes: "https://www.googleapis.com/auth/drive.file",
-        redirectTo: `${window.location.origin}/`,
-      },
-    });
+  const handleSignIn = () => {
+    router.push("/auth");
   };
 
   const handleSignOut = async () => {
@@ -96,6 +92,7 @@ export function AuthButton() {
 
   return (
     <button
+      id="nav-sign-in-btn"
       onClick={handleSignIn}
       className="btn-primary"
       style={{
@@ -106,7 +103,7 @@ export function AuthButton() {
         padding: "9px 20px",
       }}
     >
-      <LogIn style={{ width: 16, height: 16 }} /> Sign In with Google
+      <LogIn style={{ width: 16, height: 16 }} /> Sign In
     </button>
   );
 }
