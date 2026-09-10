@@ -1,13 +1,10 @@
-
-# muvi - Movie Bank App
+# **muvi** - Movie Bank App
 
 **Zero local storage. Cloud-powered cinema. Social movie curation.**
 
 **muvi** is an offline-first, full-stack Progressive Web App (PWA) designed to bridge media storage and community movie curation. It allows users to leverage high-speed networks (such as campus Wi-Fi) to transfer video files directly into remote cloud storage without filling up local device space. 
 
 Users can curate shared collections, stream stored movies on demand, take personal timestamped notes, and chat in real-time with uploaders and peers.
-
-
 
 ## Key Features
 
@@ -19,7 +16,6 @@ Users can curate shared collections, stream stored movies on demand, take person
 * **Offline-First PWA:** Full Service Worker and Web App Manifest setup allowing offline access to cached watchlists, metadata, and user notes.
 * **Personal Watch Notes:** Keep private reviews, timestamps, and commentary directly on movie cards.
 
-
 ## Tech Stack
 
 | Domain | Technology |
@@ -29,3 +25,4 @@ Users can curate shared collections, stream stored movies on demand, take person
 | **Database & Auth** | Supabase (PostgreSQL, Auth, Realtime WebSockets) |
 | **Cloud Storage** | Cloudflare R2 / S3-Compatible Storage |
 | **External API** | TMDB (The Movie Database API) |
+
