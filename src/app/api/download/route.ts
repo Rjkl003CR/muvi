@@ -134,7 +134,7 @@ export async function POST(request: Request) {
 
     if (dbError) {
       console.error("Supabase insert error:", dbError);
-      throw new Error("Failed to save movie metadata to database");
+      throw new Error(`Failed to save movie metadata: ${dbError.message || JSON.stringify(dbError)}`);
     }
 
     return NextResponse.json({

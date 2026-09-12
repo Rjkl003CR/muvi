@@ -1,7 +1,6 @@
 // src/app/api/auth/signup/route.ts
 import { NextResponse } from 'next/server';
 import { supabase, hashPassword, signAccessToken, signRefreshToken, storeRefreshToken } from '@/lib/auth';
-import { v4 as uuidv4 } from 'uuid';
 
 export async function POST(request: Request) {
   try {
@@ -26,7 +25,7 @@ export async function POST(request: Request) {
     }
 
     const passwordHash = await hashPassword(password);
-    const userId = uuidv4();
+    const userId = crypto.randomUUID();
     const { error: insertErr } = await supabase.from('users').insert({
       id: userId,
       email,
