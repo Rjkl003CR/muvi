@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
 import { LogIn, LogOut, User } from "lucide-react";
+import { setAccessToken, removeAccessToken } from "@/utils/token";
 
 export function AuthButton() {
   const router = useRouter();
@@ -14,9 +15,8 @@ export function AuthButton() {
     const { data: authListener } = supabase.auth.onAuthStateChange(
       (event, session) => {
         setUser(session?.user ?? null);
-        // We can store the provider token in local storage or state to use for Google Drive uploads
         if (session?.provider_token) {
-          localStorage.setItem("google_access_token", session.provider_token);
+          setAccessToken(session.provider_token);
         }
       }
     );
@@ -32,7 +32,7 @@ export function AuthButton() {
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
-    localStorage.removeItem("google_access_token");
+    removeAccessToken();
   };
 
   if (user) {

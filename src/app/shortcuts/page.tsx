@@ -1,44 +1,11 @@
-import { Zap } from "lucide-react";
+import type { Metadata } from "next";
+import { ShortcutsApp } from "@/app/shortcuts/shortcuts-app";
+
+export const metadata: Metadata = {
+  title: "Shortcuts — muvi",
+  description: "Manage, organize, and 1-click launch your account and application login links.",
+};
 
 export default function ShortcutsPage() {
-  return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        minHeight: "calc(100vh - 64px)",
-        gap: 16,
-        color: "var(--text-muted)",
-        fontFamily: "var(--font-heading)",
-      }}
-    >
-      <div
-        style={{
-          width: 72,
-          height: 72,
-          borderRadius: "50%",
-          background: "rgba(240,100,73,0.08)",
-          border: "2px dashed var(--border-hover)",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <Zap style={{ width: 32, height: 32, color: "var(--accent)" }} />
-      </div>
-      <h1
-        style={{
-          fontSize: "1.6rem",
-          fontWeight: 700,
-          color: "var(--text-primary)",
-          margin: 0,
-        }}
-      >
-        Shortcuts
-      </h1>
-      <p style={{ margin: 0, fontSize: "0.95rem" }}>Coming soon — stay tuned!</p>
-    </div>
-  );
+  return <ShortcutsApp />;
 }

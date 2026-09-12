@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { ThemeToggle } from "./theme-toggle";
 import { useSidebar } from "./sidebar-context";
+import { removeAccessToken } from "@/utils/token";
 
 /* ── Mock notifications (replace with real data later) ── */
 interface Notification {
@@ -98,7 +99,7 @@ export function TopNavbar() {
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
-    localStorage.removeItem("google_access_token");
+    removeAccessToken();
     setProfileOpen(false);
   };
 

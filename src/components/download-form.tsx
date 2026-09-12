@@ -10,6 +10,7 @@ import {
   Film,
   Type,
 } from "lucide-react";
+import { getAccessToken } from "@/utils/token";
 
 interface DownloadResult {
   id: string;
@@ -56,7 +57,7 @@ export function DownloadForm() {
   const handleDownload = async () => {
     if (!url.trim()) return;
 
-    const token = localStorage.getItem("google_access_token");
+    const token = getAccessToken();
     if (!token) {
       setStatus("error");
       setMessage("Please sign in with Google first to enable downloads.");
