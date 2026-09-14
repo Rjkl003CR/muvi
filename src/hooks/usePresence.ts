@@ -17,6 +17,7 @@ export function usePresence(channelId: string) {
 
     const setupPresence = async () => {
       const { data: userData } = await supabase.auth.getUser();
+      if (!isMounted) return;
       if (!userData.user) return;
 
       presenceChannel = supabase.channel(`presence:${channelId}`);

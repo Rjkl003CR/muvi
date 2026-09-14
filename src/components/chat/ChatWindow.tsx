@@ -57,7 +57,7 @@ export function ChatWindow({ channelId, channelName, onlineUsersCount }: ChatWin
             <div className="p-4 rounded-full" style={{ background: 'rgba(240, 100, 73, 0.08)' }}>
               <MessageSquare className="h-8 w-8 text-[var(--accent)]" />
             </div>
-            <p>No messages yet. Start the conversation!</p>
+            <p>No messages yet.</p>
           </div>
         ) : (
           messages.map((msg) => (

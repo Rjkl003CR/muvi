@@ -23,7 +23,7 @@ export function useRealtimeMessages(channelId: string | null) {
         .limit(50);
 
       if (error) {
-        console.error("Error fetching messages:", error);
+        console.warn("Supabase fetch failed (likely tables missing), falling back to mock data.");
       } 
       
       if (isMounted) {

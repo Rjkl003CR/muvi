@@ -5,7 +5,7 @@ import { MessageSquare } from "lucide-react";
 
 export default function ChatLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex flex-col h-[calc(100vh-4rem)]" style={{ background: 'var(--bg-primary)' }}>
+    <div className="flex flex-col h-[calc(100vh-64px)] overflow-hidden" style={{ background: 'var(--bg-primary)' }}>
       {/* ── Top Header ── */}
       <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: 16, padding: "24px 32px 16px", flexShrink: 0 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 12 }}>

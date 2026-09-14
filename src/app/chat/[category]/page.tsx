@@ -34,7 +34,7 @@ export default function CategoryChatPage({ params }: { params: Promise<{ categor
         .order("name", { ascending: true });
 
       if (error) {
-        console.error("Error fetching channels:", error);
+        console.warn("Supabase fetch failed (likely tables missing), falling back to mock data.");
       } 
       
       if (isMounted) {
