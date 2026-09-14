@@ -63,7 +63,7 @@ export default function PreferencesSettingsPage() {
   return (
     <div className="space-y-10">
       <div>
-        <h3 className="text-2xl font-semibold leading-none tracking-tight">Theme Settings</h3>
+        <h3 className="text-3xl font-bold leading-tight tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-accent to-accent-pink pb-1">Theme Settings</h3>
        
       </div>
 

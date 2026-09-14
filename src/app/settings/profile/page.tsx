@@ -11,7 +11,7 @@ export default function ProfilePage() {
   return (
     <div className="space-y-10 animate-fade-in">
       <div>
-        <h3 className="text-3xl font-bold leading-tight tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-accent to-accent-pink pb-1">Public Profile</h3>
+        <h3 className="text-3xl font-bold leading-tight tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-accent to-accent-pink pb-1">Profile Settings</h3>
       
       </div>
       <div className="max-w-3xl relative">

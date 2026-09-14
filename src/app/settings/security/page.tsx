@@ -12,10 +12,7 @@ export default function SecuritySettingsPage() {
   return (
     <div className="space-y-10 animate-fade-in">
       <div>
-        <h3 className="text-3xl font-bold leading-tight tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-accent to-accent-pink pb-1">Security & Privacy</h3>
-        <p className="text-sm text-muted-foreground mt-2">
-          Manage your password and control your data privacy.
-        </p>
+        <h3 className="text-3xl font-bold leading-tight tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-accent to-accent-pink pb-1">Security Settings</h3>
       </div>
       
       <div className="grid gap-8 max-w-3xl">
