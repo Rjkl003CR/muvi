@@ -62,6 +62,31 @@ export function ProfileForm() {
     );
   }
 
+  const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Validate file size (1MB max)
+    if (file.size > 1024 * 1024) {
+      setMessage('Image must be under 1MB.');
+      return;
+    }
+
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      setMessage('Please select an image file (JPG, PNG, or GIF).');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const base64 = reader.result as string;
+      setAvatarUrl(base64);
+      setMessage('');
+    };
+    reader.readAsDataURL(file);
+  };
+
   return (
     <form onSubmit={handleSubmit} className="space-y-8">
       {/* Avatar Section */}
@@ -79,7 +104,7 @@ export function ProfileForm() {
           {/* Avatar Upload Overlay */}
           <label className="absolute inset-0 flex items-center justify-center bg-black/50 text-white rounded-full opacity-0 group-hover:opacity-100 cursor-pointer transition-opacity backdrop-blur-sm">
             <Camera className="w-6 h-6" />
-            <input type="file" className="hidden" accept="image/*" onChange={() => alert('Avatar upload implementation requires S3 setup.')} />
+            <input type="file" className="hidden" accept="image/*" onChange={handleAvatarChange} />
           </label>
         </div>
         <div>

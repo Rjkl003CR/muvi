@@ -11,7 +11,6 @@ export default function StorageSettingsPage() {
     <div className="space-y-10 animate-fade-in">
       <div>
         <h3 className="text-3xl font-bold leading-tight tracking-tight bg-clip-text text-transparent pb-1" style={{ backgroundImage: 'var(--gradient-accent)' }}>Storage Quota</h3>
-
       </div>
 
       <div className="max-w-2xl relative">
@@ -19,7 +18,7 @@ export default function StorageSettingsPage() {
         <div className="absolute inset-0 bg-accent/10 blur-3xl rounded-[3rem] -z-10 animate-pulse-glow" />
 
         {/* Progress Bar Chart Card */}
-        <div className="relative p-10 rounded-3xl border border-border/50 bg-card/60 backdrop-blur-xl shadow-card hover:shadow-card-hover transition-all duration-500 overflow-hidden group">
+        <div className="relative p-10 glass-card gradient-border-card animate-fade-in group">
 
           {/* Subtle mesh overlay */}
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--accent-glow),_transparent_50%)] opacity-50 pointer-events-none transition-opacity group-hover:opacity-100 duration-500" />

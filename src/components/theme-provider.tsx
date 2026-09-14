@@ -13,12 +13,21 @@ export const ColorThemeContext = createContext({
 export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
   const [colorTheme, setColorTheme] = useState("theme-coral");
 
+  const isInitialMount = React.useRef(true);
+
   useEffect(() => {
     const saved = localStorage.getItem("muvi-color-theme");
-    if (saved) setColorTheme(saved);
+    if (saved) {
+      setColorTheme(saved);
+      document.documentElement.setAttribute("data-theme", saved);
+    }
   }, []);
 
   useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
+    }
     localStorage.setItem("muvi-color-theme", colorTheme);
     document.documentElement.setAttribute("data-theme", colorTheme);
   }, [colorTheme]);

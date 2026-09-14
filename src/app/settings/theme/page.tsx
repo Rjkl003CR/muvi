@@ -1,6 +1,6 @@
 "use client";
 
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useTheme } from 'next-themes';
 import { Moon, Sun } from 'lucide-react';
 import { ColorThemeContext } from '../../../components/theme-provider';
@@ -8,6 +8,11 @@ import { ColorThemeContext } from '../../../components/theme-provider';
 export default function PreferencesSettingsPage() {
   const { theme, setTheme } = useTheme();
   const { colorTheme, setColorTheme } = useContext(ColorThemeContext);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const palettes = [
     {
@@ -57,19 +62,61 @@ export default function PreferencesSettingsPage() {
       name: 'Slate Minimal',
       description: 'Monochrome professional greys.',
       gradient: 'linear-gradient(135deg, #64748b, #94a3b8)'
+    },
+    {
+      id: 'theme-amethyst',
+      name: 'Amethyst',
+      description: 'Rich royal purple.',
+      gradient: 'linear-gradient(135deg, #8b5cf6, #c084fc)'
+    },
+    {
+      id: 'theme-sunset',
+      name: 'Sunset Orange',
+      description: 'Warm amber and deep orange.',
+      gradient: 'linear-gradient(135deg, #f97316, #fbbf24)'
+    },
+    {
+      id: 'theme-emerald',
+      name: 'Emerald Jewel',
+      description: 'Bright vivid emerald green.',
+      gradient: 'linear-gradient(135deg, #059669, #10b981)'
+    },
+    {
+      id: 'theme-sapphire',
+      name: 'Sapphire Deep',
+      description: 'Deep ocean blues.',
+      gradient: 'linear-gradient(135deg, #1d4ed8, #3b82f6)'
+    },
+    {
+      id: 'theme-ruby',
+      name: 'Ruby Rose',
+      description: 'Deep rose and red.',
+      gradient: 'linear-gradient(135deg, #be123c, #f43f5e)'
+    },
+    {
+      id: 'theme-gold',
+      name: 'Golden Hour',
+      description: 'Radiant yellow and gold.',
+      gradient: 'linear-gradient(135deg, #ca8a04, #facc15)'
+    },
+    {
+      id: 'theme-lavender',
+      name: 'Lavender Mist',
+      description: 'Soft and calming lavender.',
+      gradient: 'linear-gradient(135deg, #a78bfa, #c4b5fd)'
     }
   ];
 
   return (
     <div className="space-y-10">
       <div>
-        <h3 className="text-3xl font-bold leading-tight tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-accent to-accent-pink pb-1">Theme Settings</h3>
-       
+        <h3 className="text-3xl font-bold leading-tight tracking-tight bg-clip-text text-transparent pb-1" style={{ backgroundImage: 'var(--gradient-accent)' }}>Theme</h3>
       </div>
 
-      <div className="max-w-3xl">
-        {/* Color Palettes with integrated Light/Dark toggles */}
-        <div className="space-y-4">
+      <div className="max-w-3xl relative">
+        <div className="relative p-8 glass-card gradient-border-card animate-fade-in group">
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--accent-glow),_transparent_50%)] opacity-30 pointer-events-none transition-opacity group-hover:opacity-100 duration-500" />
+          <div className="relative z-10 space-y-4">
           <div>
             <h4 className="text-lg font-medium">Color Palette & Mode</h4>
             <p className="text-sm text-muted-foreground">Choose a dynamic neon color set and select your preferred mode.</p>
@@ -105,9 +152,9 @@ export default function PreferencesSettingsPage() {
                     <button
                       onClick={() => setTheme('light')}
                       className={`flex items-center justify-center gap-1.5 px-2 py-2 rounded-xl border text-xs font-medium transition-colors ${
-                        theme === 'light' 
-                          ? 'bg-accent text-white border-accent shadow-sm' 
-                          : 'bg-background hover:bg-muted text-muted-foreground border-border/50'
+                        mounted && theme === 'light' 
+                          ? 'bg-accent text-white border-accent shadow-[0_0_10px_var(--accent-glow)]' 
+                          : 'bg-background hover:bg-secondary hover:border-accent hover:shadow-[0_0_10px_var(--accent-glow)] hover:text-accent transition-all duration-300 text-muted-foreground border-border/50'
                       }`}
                     >
                       <Sun className="w-3.5 h-3.5" /> Light
@@ -115,9 +162,9 @@ export default function PreferencesSettingsPage() {
                     <button
                       onClick={() => setTheme('dark')}
                       className={`flex items-center justify-center gap-1.5 px-2 py-2 rounded-xl border text-xs font-medium transition-colors ${
-                        theme === 'dark' 
-                          ? 'bg-accent text-white border-accent shadow-sm' 
-                          : 'bg-background hover:bg-muted text-muted-foreground border-border/50'
+                        mounted && theme === 'dark' 
+                          ? 'bg-accent text-white border-accent shadow-[0_0_10px_var(--accent-glow)]' 
+                          : 'bg-background hover:bg-secondary hover:border-accent hover:shadow-[0_0_10px_var(--accent-glow)] hover:text-accent transition-all duration-300 text-muted-foreground border-border/50'
                       }`}
                     >
                       <Moon className="w-3.5 h-3.5" /> Dark
@@ -127,8 +174,8 @@ export default function PreferencesSettingsPage() {
               </div>
             ))}
           </div>
+          </div>
         </div>
-
       </div>
     </div>
   );
