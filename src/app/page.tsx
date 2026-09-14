@@ -58,19 +58,7 @@ export default function Home() {
             </span>
           </h1>
 
-          <p
-            className="animate-fade-in-delay-2"
-            style={{
-              fontSize: "1.05rem",
-              color: "var(--text-secondary)",
-              maxWidth: 480,
-              margin: "0 auto",
-              lineHeight: 1.6,
-            }}
-          >
-            Paste a video link and we'll save it directly to your Google Drive.
-            No local storage needed — zero footprint.
-          </p>
+
         </div>
 
         {/* Download Form */}

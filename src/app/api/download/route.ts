@@ -88,7 +88,19 @@ export async function POST(request: Request) {
 
     if (!uploadRes.ok) {
       const errText = await uploadRes.text();
-      throw new Error(`Google Drive Upload Failed: ${errText}`);
+      console.error("Google Drive upload error:", uploadRes.status, errText);
+      
+      // Parse the error to give a helpful message
+      if (uploadRes.status === 401 || uploadRes.status === 403) {
+        let parsed;
+        try { parsed = JSON.parse(errText); } catch {}
+        const reason = parsed?.error?.errors?.[0]?.reason || "";
+        if (reason === "insufficientPermissions" || errText.includes("SCOPE_INSUFFICIENT")) {
+          throw new Error("Google Drive permission denied. Your session needs Drive access. Please reconnect Google Drive.");
+        }
+        throw new Error("Google Drive authentication failed. Please reconnect your Google account.");
+      }
+      throw new Error(`Google Drive upload failed (${uploadRes.status}). Please try again.`);
     }
 
     const uploadData = await uploadRes.json();
@@ -134,7 +146,7 @@ export async function POST(request: Request) {
 
     if (dbError) {
       console.error("Supabase insert error:", dbError);
-      throw new Error("Failed to save movie metadata to database");
+      throw new Error(`Failed to save movie metadata: ${dbError.message || JSON.stringify(dbError)}`);
     }
 
     return NextResponse.json({

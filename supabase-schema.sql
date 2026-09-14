@@ -1,77 +1,108 @@
--- =========================================================
--- Muvi Database Schema for Supabase
--- Run this script in your Supabase Project -> SQL Editor
--- =========================================================
+﻿-- ============================================================
+-- MUVI - Complete Supabase Schema
+-- Run this entire script in: Supabase Dashboard > SQL Editor
+-- ============================================================
 
--- 1. Notes Table
+-- 1. USERS TABLE
+CREATE TABLE IF NOT EXISTS public.users (
+  id            uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  email         text UNIQUE NOT NULL,
+  password_hash text,
+  name          text,
+  avatar_url    text,
+  email_verified boolean DEFAULT false,
+  created_at    timestamptz DEFAULT now(),
+  updated_at    timestamptz DEFAULT now()
+);
+
+-- 2. MOVIES TABLE
+CREATE TABLE IF NOT EXISTS public.movies (
+  id             uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id        uuid REFERENCES public.users(id) ON DELETE CASCADE,
+  title          text NOT NULL,
+  drive_file_id  text,
+  drive_view_url text,
+  original_url   text,
+  file_size      bigint,
+  mime_type      text,
+  genres         text[],
+  release_year   integer,
+  imdb_rating    numeric(3,1),
+  poster_url     text,
+  created_at     timestamptz DEFAULT now(),
+  updated_at     timestamptz DEFAULT now()
+);
+CREATE INDEX IF NOT EXISTS movies_user_id_idx ON public.movies(user_id);
+
+-- 3. NOTES TABLE
 CREATE TABLE IF NOT EXISTS public.notes (
-  id TEXT PRIMARY KEY,
-  user_id TEXT NOT NULL DEFAULT 'default_user',
-  title TEXT NOT NULL DEFAULT '',
-  content TEXT NOT NULL DEFAULT '',
-  tags TEXT[] DEFAULT '{}',
-  color TEXT DEFAULT 'default',
-  pinned BOOLEAN DEFAULT false,
-  created_at TIMESTAMPTZ DEFAULT timezone('utc'::text, now()),
-  updated_at TIMESTAMPTZ DEFAULT timezone('utc'::text, now())
+  id         text PRIMARY KEY,
+  user_id    text NOT NULL,
+  title      text NOT NULL DEFAULT 'Untitled Note',
+  content    text DEFAULT '',
+  tags       text[] DEFAULT '{}',
+  color      text DEFAULT 'default',
+  pinned     boolean DEFAULT false,
+  created_at timestamptz DEFAULT now(),
+  updated_at timestamptz DEFAULT now()
 );
+CREATE INDEX IF NOT EXISTS notes_user_id_idx ON public.notes(user_id);
 
--- Index for fast user querying
-CREATE INDEX IF NOT EXISTS idx_notes_user_id ON public.notes(user_id);
-CREATE INDEX IF NOT EXISTS idx_notes_updated_at ON public.notes(updated_at DESC);
-
--- 2. Vault Meta Table (Stores PBKDF2 salt and encrypted check phrase per user)
-CREATE TABLE IF NOT EXISTS public.vault_meta (
-  user_id TEXT PRIMARY KEY,
-  salt TEXT NOT NULL,
-  check_hash TEXT NOT NULL,
-  created_at TIMESTAMPTZ DEFAULT timezone('utc'::text, now()),
-  updated_at TIMESTAMPTZ DEFAULT timezone('utc'::text, now())
-);
-
--- 3. Vault Items Table (Client-side AES-256 encrypted items)
-CREATE TABLE IF NOT EXISTS public.vault_items (
-  id TEXT PRIMARY KEY,
-  user_id TEXT NOT NULL DEFAULT 'default_user',
-  type TEXT NOT NULL, -- 'note' | 'file'
-  title TEXT NOT NULL,
-  encrypted_data TEXT NOT NULL,
-  file_name TEXT,
-  file_type TEXT,
-  file_size INT,
-  created_at TIMESTAMPTZ DEFAULT timezone('utc'::text, now()),
-  updated_at TIMESTAMPTZ DEFAULT timezone('utc'::text, now())
-);
-
-CREATE INDEX IF NOT EXISTS idx_vault_items_user_id ON public.vault_items(user_id);
-CREATE INDEX IF NOT EXISTS idx_vault_items_updated_at ON public.vault_items(updated_at DESC);
-
--- 4. Shortcuts Table (Account & App Login Links)
+-- 4. SHORTCUTS TABLE
 CREATE TABLE IF NOT EXISTS public.shortcuts (
-  id TEXT PRIMARY KEY,
-  user_id TEXT NOT NULL DEFAULT 'default_user',
-  title TEXT NOT NULL,
-  url TEXT NOT NULL,
-  username_hint TEXT DEFAULT '',
-  category TEXT NOT NULL DEFAULT 'General',
-  color TEXT DEFAULT 'default',
-  pinned BOOLEAN DEFAULT false,
-  clicks INT DEFAULT 0,
-  created_at TIMESTAMPTZ DEFAULT timezone('utc'::text, now()),
-  updated_at TIMESTAMPTZ DEFAULT timezone('utc'::text, now())
+  id            text PRIMARY KEY,
+  user_id       text NOT NULL,
+  title         text NOT NULL,
+  url           text NOT NULL,
+  username_hint text DEFAULT '',
+  category      text DEFAULT 'General',
+  color         text DEFAULT 'default',
+  pinned        boolean DEFAULT false,
+  clicks        integer DEFAULT 0,
+  created_at    timestamptz DEFAULT now(),
+  updated_at    timestamptz DEFAULT now()
+);
+CREATE INDEX IF NOT EXISTS shortcuts_user_id_idx ON public.shortcuts(user_id);
+
+-- 5. VAULT META TABLE
+CREATE TABLE IF NOT EXISTS public.vault_meta (
+  id         text PRIMARY KEY,
+  user_id    text NOT NULL UNIQUE,
+  salt       text NOT NULL,
+  iv         text NOT NULL,
+  hint       text DEFAULT '',
+  created_at timestamptz DEFAULT now(),
+  updated_at timestamptz DEFAULT now()
 );
 
-CREATE INDEX IF NOT EXISTS idx_shortcuts_user_id ON public.shortcuts(user_id);
-CREATE INDEX IF NOT EXISTS idx_shortcuts_updated_at ON public.shortcuts(updated_at DESC);
+-- 6. VAULT ITEMS TABLE
+CREATE TABLE IF NOT EXISTS public.vault_items (
+  id             text PRIMARY KEY,
+  user_id        text NOT NULL,
+  label          text NOT NULL,
+  type           text DEFAULT 'text',
+  encrypted_data text NOT NULL,
+  iv             text NOT NULL,
+  created_at     timestamptz DEFAULT now(),
+  updated_at     timestamptz DEFAULT now()
+);
+CREATE INDEX IF NOT EXISTS vault_items_user_id_idx ON public.vault_items(user_id);
 
--- 5. Enable Row Level Security (RLS) if desired, or allow public access for anon keys
-ALTER TABLE public.notes ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.vault_meta ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.vault_items ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.shortcuts ENABLE ROW LEVEL SECURITY;
+-- 7. REFRESH TOKENS TABLE
+CREATE TABLE IF NOT EXISTS public.refresh_tokens (
+  id         uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id    uuid REFERENCES public.users(id) ON DELETE CASCADE,
+  token      text UNIQUE NOT NULL,
+  expires_at timestamptz NOT NULL,
+  created_at timestamptz DEFAULT now()
+);
+CREATE INDEX IF NOT EXISTS refresh_tokens_token_idx ON public.refresh_tokens(token);
 
--- Allow read/write for anon and authenticated users
-CREATE POLICY "Allow all on notes" ON public.notes FOR ALL USING (true) WITH CHECK (true);
-CREATE POLICY "Allow all on vault_meta" ON public.vault_meta FOR ALL USING (true) WITH CHECK (true);
-CREATE POLICY "Allow all on vault_items" ON public.vault_items FOR ALL USING (true) WITH CHECK (true);
-CREATE POLICY "Allow all on shortcuts" ON public.shortcuts FOR ALL USING (true) WITH CHECK (true);
+-- 8. DISABLE RLS (service role key is used server-side, bypasses RLS anyway)
+ALTER TABLE public.notes DISABLE ROW LEVEL SECURITY;
+ALTER TABLE public.shortcuts DISABLE ROW LEVEL SECURITY;
+ALTER TABLE public.vault_meta DISABLE ROW LEVEL SECURITY;
+ALTER TABLE public.vault_items DISABLE ROW LEVEL SECURITY;
+ALTER TABLE public.movies DISABLE ROW LEVEL SECURITY;
+
+SELECT 'All Muvi tables created successfully!' AS status;
