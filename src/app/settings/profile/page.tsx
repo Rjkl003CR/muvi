@@ -9,15 +9,19 @@ export const metadata: Metadata = {
 
 export default function ProfilePage() {
   return (
-    <div className="space-y-6">
+    <div className="space-y-10 animate-fade-in">
       <div>
-        <h3 className="text-2xl font-semibold leading-none tracking-tight">Public Profile</h3>
-        <p className="text-sm text-muted-foreground mt-2">
-          This is how others will see you on Muvi.
-        </p>
+        <h3 className="text-3xl font-bold leading-tight tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-accent to-accent-pink pb-1">Public Profile</h3>
+      
       </div>
-      <div className="bg-card border border-border/50 rounded-xl p-6 shadow-sm">
-        <ProfileForm />
+      <div className="max-w-3xl relative">
+        <div className="absolute inset-0 bg-accent/10 blur-3xl rounded-[3rem] -z-10 animate-pulse-glow" />
+        <div className="relative p-8 rounded-3xl border border-border/50 bg-card/60 backdrop-blur-xl shadow-card hover:shadow-card-hover transition-all duration-500 overflow-hidden group">
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--accent-glow),_transparent_50%)] opacity-30 pointer-events-none transition-opacity group-hover:opacity-100 duration-500" />
+          <div className="relative z-10">
+            <ProfileForm />
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -40,6 +40,188 @@
   --gradient-mesh: radial-gradient(ellipse at 20% 50%, rgba(240, 100, 73, 0.06) 0%, transparent 50%),
                    radial-gradient(ellipse at 80% 20%, rgba(247, 183, 49, 0.05) 0%, transparent 50%),
                    radial-gradient(ellipse at 50% 80%, rgba(247, 140, 162, 0.04) 0%, transparent 50%);
+}
+
+/* ============================================
+   DYNAMIC THEME OVERRIDES (Accents & Backgrounds)
+   ============================================ */
+
+/* 1. Coral Delight (Default) */
+[data-theme='theme-coral'] {
+  --bg-primary: #fefcfb;
+  --bg-secondary: #fdf6f0;
+  --bg-card: rgba(255, 255, 255, 0.85);
+  --gradient-hero: linear-gradient(135deg, #fdf6f0 0%, #ffecd2 40%, #fce4ec 100%);
+}
+.dark[data-theme='theme-coral'] {
+  --bg-primary: #0f0a08;
+  --bg-secondary: #1a110d;
+  --bg-card: rgba(30, 18, 12, 0.85);
+  --gradient-hero: linear-gradient(135deg, #0f0a08 0%, #1a110d 40%, #1c0f14 100%);
+}
+
+/* 2. Crimson Blood */
+[data-theme='theme-crimson'] {
+  --accent: #e60000;
+  --accent-warm: #ff3333;
+  --accent-gold: #b30000;
+  --accent-pink: #ff6666;
+  --accent-glow: rgba(230, 0, 0, 0.35);
+  --accent-glow-strong: rgba(230, 0, 0, 0.55);
+  --gradient-accent: linear-gradient(135deg, #e60000, #b30000);
+  --gradient-card-border: linear-gradient(135deg, #e60000, #ff3333, #b30000);
+  
+  --bg-primary: #fffafa;
+  --bg-secondary: #ffeded;
+  --bg-card: rgba(255, 255, 255, 0.85);
+  --gradient-hero: linear-gradient(135deg, #ffeded 0%, #ffe4e4 40%, #ffcccc 100%);
+}
+.dark[data-theme='theme-crimson'] {
+  --bg-primary: #120000;
+  --bg-secondary: #1a0000;
+  --bg-card: rgba(30, 0, 0, 0.85);
+  --gradient-hero: linear-gradient(135deg, #120000 0%, #1a0000 40%, #220000 100%);
+}
+
+/* 3. Cyberpunk (Cyan) */
+[data-theme='theme-cyberpunk'] {
+  --accent: #00f0ff;
+  --accent-warm: #5c62ff;
+  --accent-gold: #bc13fe;
+  --accent-pink: #ff00ea;
+  --accent-glow: rgba(0, 240, 255, 0.35);
+  --accent-glow-strong: rgba(0, 240, 255, 0.55);
+  --gradient-accent: linear-gradient(135deg, #00f0ff, #bc13fe);
+  --gradient-card-border: linear-gradient(135deg, #00f0ff, #5c62ff, #bc13fe);
+  
+  --bg-primary: #f0fbff;
+  --bg-secondary: #e0f6ff;
+  --bg-card: rgba(255, 255, 255, 0.85);
+  --gradient-hero: linear-gradient(135deg, #e0f6ff 0%, #ccf0ff 40%, #e6ccff 100%);
+}
+.dark[data-theme='theme-cyberpunk'] {
+  --bg-primary: #000c14;
+  --bg-secondary: #001322;
+  --bg-card: rgba(0, 16, 30, 0.85);
+  --gradient-hero: linear-gradient(135deg, #000c14 0%, #001322 40%, #0c001a 100%);
+}
+
+/* 4. Synthwave (Pink) */
+[data-theme='theme-synthwave'] {
+  --accent: #ff007f;
+  --accent-warm: #d500ff;
+  --accent-gold: #7000ff;
+  --accent-pink: #ff00ea;
+  --accent-glow: rgba(255, 0, 127, 0.35);
+  --accent-glow-strong: rgba(255, 0, 127, 0.55);
+  --gradient-accent: linear-gradient(135deg, #ff007f, #7000ff);
+  --gradient-card-border: linear-gradient(135deg, #ff007f, #d500ff, #7000ff);
+  
+  --bg-primary: #fff0f7;
+  --bg-secondary: #ffe0ef;
+  --bg-card: rgba(255, 255, 255, 0.85);
+  --gradient-hero: linear-gradient(135deg, #ffe0ef 0%, #ffcce0 40%, #e6ccff 100%);
+}
+.dark[data-theme='theme-synthwave'] {
+  --bg-primary: #12000a;
+  --bg-secondary: #1a0010;
+  --bg-card: rgba(30, 0, 16, 0.85);
+  --gradient-hero: linear-gradient(135deg, #12000a 0%, #1a0010 40%, #130022 100%);
+}
+
+/* 5. Acid Neon (Green) */
+[data-theme='theme-acid'] {
+  --accent: #39ff14;
+  --accent-warm: #7fff00;
+  --accent-gold: #bfff00;
+  --accent-pink: #00ff7f;
+  --accent-glow: rgba(57, 255, 20, 0.35);
+  --accent-glow-strong: rgba(57, 255, 20, 0.55);
+  --gradient-accent: linear-gradient(135deg, #39ff14, #bfff00);
+  --gradient-card-border: linear-gradient(135deg, #39ff14, #7fff00, #bfff00);
+  
+  --bg-primary: #f2fff0;
+  --bg-secondary: #e3ffe0;
+  --bg-card: rgba(255, 255, 255, 0.85);
+  --gradient-hero: linear-gradient(135deg, #e3ffe0 0%, #ccffc0 40%, #e6ffc0 100%);
+}
+.dark[data-theme='theme-acid'] {
+  --bg-primary: #051200;
+  --bg-secondary: #081a00;
+  --bg-card: rgba(10, 30, 0, 0.85);
+  --gradient-hero: linear-gradient(135deg, #051200 0%, #081a00 40%, #112200 100%);
+}
+
+/* 6. Ocean Breeze (Blue) */
+[data-theme='theme-ocean'] {
+  --accent: #0ea5e9;
+  --accent-warm: #0284c7;
+  --accent-gold: #38bdf8;
+  --accent-pink: #7dd3fc;
+  --accent-glow: rgba(14, 165, 233, 0.35);
+  --accent-glow-strong: rgba(14, 165, 233, 0.55);
+  --gradient-accent: linear-gradient(135deg, #0ea5e9, #38bdf8);
+  --gradient-card-border: linear-gradient(135deg, #0ea5e9, #0284c7, #38bdf8);
+  
+  --bg-primary: #f0f9ff;
+  --bg-secondary: #e0f2fe;
+  --bg-card: rgba(255, 255, 255, 0.85);
+  --gradient-hero: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 40%, #e0e7ff 100%);
+}
+.dark[data-theme='theme-ocean'] {
+  --bg-primary: #020617;
+  --bg-secondary: #0f172a;
+  --bg-card: rgba(15, 23, 42, 0.85);
+  --gradient-hero: linear-gradient(135deg, #020617 0%, #0f172a 40%, #1e293b 100%);
+}
+
+/* 7. Forest Canopy (Green) */
+[data-theme='theme-forest'] {
+  --accent: #10b981;
+  --accent-warm: #059669;
+  --accent-gold: #34d399;
+  --accent-pink: #6ee7b7;
+  --accent-glow: rgba(16, 185, 129, 0.35);
+  --accent-glow-strong: rgba(16, 185, 129, 0.55);
+  --gradient-accent: linear-gradient(135deg, #10b981, #34d399);
+  --gradient-card-border: linear-gradient(135deg, #10b981, #059669, #34d399);
+  
+  --bg-primary: #f0fdf4;
+  --bg-secondary: #dcfce7;
+  --bg-card: rgba(255, 255, 255, 0.85);
+  --gradient-hero: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 40%, #ecfccb 100%);
+}
+.dark[data-theme='theme-forest'] {
+  --bg-primary: #022c22;
+  --bg-secondary: #064e3b;
+  --bg-card: rgba(6, 78, 59, 0.85);
+  --gradient-hero: linear-gradient(135deg, #022c22 0%, #064e3b 40%, #065f46 100%);
+}
+
+/* 8. Slate Minimal (Monochrome) */
+[data-theme='theme-slate'] {
+  --accent: #64748b;
+  --accent-warm: #475569;
+  --accent-gold: #94a3b8;
+  --accent-pink: #cbd5e1;
+  --accent-glow: rgba(100, 116, 139, 0.35);
+  --accent-glow-strong: rgba(100, 116, 139, 0.55);
+  --gradient-accent: linear-gradient(135deg, #64748b, #94a3b8);
+  --gradient-card-border: linear-gradient(135deg, #64748b, #475569, #94a3b8);
+  
+  --bg-primary: #f8fafc;
+  --bg-secondary: #f1f5f9;
+  --bg-card: rgba(255, 255, 255, 0.85);
+  --gradient-hero: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 40%, #f1f5f9 100%);
+}
+.dark[data-theme='theme-slate'] {
+  --bg-primary: #0f172a;
+  --bg-secondary: #1e293b;
+  --bg-card: rgba(30, 41, 59, 0.85);
+  --gradient-hero: linear-gradient(135deg, #0f172a 0%, #1e293b 40%, #334155 100%);
+}
+
+:root {
 
   /* ── Typography ── */
   --font-heading: 'Outfit', sans-serif;

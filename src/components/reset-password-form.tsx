@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Loader2, KeyRound } from 'lucide-react';
+import { Loader2, KeyRound, CheckCircle2 } from 'lucide-react';
 
 export function ResetPasswordForm() {
   const [isLoading, setIsLoading] = useState(false);
@@ -55,18 +55,18 @@ export function ResetPasswordForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 max-w-md">
+    <form onSubmit={handleSubmit} className="space-y-5 max-w-md">
       <div className="space-y-2">
-        <label htmlFor="current" className="text-sm font-medium leading-none">
+        <label htmlFor="current" className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
           Current Password
         </label>
         <div className="relative">
-          <KeyRound className="absolute left-3 top-2.5 h-5 w-5 text-muted-foreground" />
+          <KeyRound className="absolute left-4 top-3.5 h-5 w-5 text-muted-foreground" />
           <input
             id="current"
             type="password"
             required
-            className="flex h-10 w-full rounded-md border border-input bg-background pl-10 pr-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+            className="input-glow pl-11"
             value={currentPassword}
             onChange={(e) => setCurrentPassword(e.target.value)}
           />
@@ -74,50 +74,75 @@ export function ResetPasswordForm() {
       </div>
 
       <div className="space-y-2">
-        <label htmlFor="new" className="text-sm font-medium leading-none">
+        <label htmlFor="new" className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
           New Password
         </label>
         <input
           id="new"
           type="password"
           required
-          className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+          className="input-glow"
           value={newPassword}
           onChange={(e) => setNewPassword(e.target.value)}
         />
-        <p className="text-[10px] text-muted-foreground">
-          Min 8 chars, 1 uppercase, 1 lowercase, 1 number, 1 special char.
-        </p>
+        {newPassword && (
+          <div className="pt-2">
+            <div className="flex h-1.5 w-full overflow-hidden rounded-full bg-secondary shadow-inner">
+              <div
+                className={`h-full transition-all duration-500 ease-out ${
+                  newPassword.length < 5
+                    ? 'w-1/4 bg-red-500 shadow-[0_0_10px_rgba(239,68,68,0.5)]'
+                    : !validatePasswordPolicy(newPassword)
+                    ? 'w-2/4 bg-yellow-500 shadow-[0_0_10px_rgba(234,179,8,0.5)]'
+                    : 'w-full bg-green-500 shadow-[0_0_10px_rgba(34,197,94,0.5)]'
+                }`}
+              />
+            </div>
+            <p className="mt-2 text-xs text-muted-foreground">
+              {validatePasswordPolicy(newPassword) ? (
+                <span className="text-green-500 font-medium flex items-center gap-1"><CheckCircle2 className="w-3 h-3"/> Strong password!</span>
+              ) : (
+                <span>Min 8 chars, 1 uppercase, 1 lowercase, 1 number, 1 special char.</span>
+              )}
+            </p>
+          </div>
+        )}
+        {!newPassword && (
+          <p className="text-xs text-muted-foreground pt-1">
+            Min 8 chars, 1 uppercase, 1 lowercase, 1 number, 1 special char.
+          </p>
+        )}
       </div>
 
       <div className="space-y-2">
-        <label htmlFor="confirm" className="text-sm font-medium leading-none">
+        <label htmlFor="confirm" className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
           Confirm New Password
         </label>
         <input
           id="confirm"
           type="password"
           required
-          className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+          className="input-glow"
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
         />
       </div>
 
       {message.text && (
-        <div className={`p-3 rounded-md text-sm font-medium ${message.type === 'success' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'}`}>
+        <div className={`p-4 rounded-xl text-sm font-medium border ${message.type === 'success' ? 'bg-green-500/10 border-green-500/20 text-green-500' : 'bg-red-500/10 border-red-500/20 text-red-500'}`}>
           {message.text}
         </div>
       )}
 
-      <div className="pt-2">
+      <div className="pt-4">
         <button
           type="submit"
           disabled={isLoading}
-          className="inline-flex w-full items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
+          className="btn-primary w-full flex items-center justify-center"
+          style={{ background: 'var(--gradient-accent)' }}
         >
           {isLoading ? (
-            <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Updating...</>
+            <span className="flex items-center justify-center gap-2"><Loader2 className="w-4 h-4 animate-spin" /> Updating...</span>
           ) : (
             'Update Password'
           )}

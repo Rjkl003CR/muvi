@@ -19,7 +19,7 @@ const menuItems = [
   { label: "Chat", href: "/chat", icon: MessageCircle },
   { label: "Notes", href: "/notes", icon: FileText },
   { label: "Shortcuts", href: "/shortcuts", icon: Zap },
-  { label: "Settings", href: "/settings/profile", icon: Settings },
+  { label: "Settings", href: "/settings", icon: Settings },
 ];
 
 export function Sidebar() {

@@ -7,7 +7,6 @@ export function ProfileForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [isFetching, setIsFetching] = useState(true);
   const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
   const [avatarUrl, setAvatarUrl] = useState('');
   const [message, setMessage] = useState('');
 
@@ -20,7 +19,6 @@ export function ProfileForm() {
           const data = await res.json();
           if (data.user) {
             setName(data.user.name || '');
-            setEmail(data.user.email || '');
             setAvatarUrl(data.user.avatar_url || '');
           }
         }
@@ -42,7 +40,7 @@ export function ProfileForm() {
       const res = await fetch('/api/user/profile', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, avatar_url: avatarUrl }),
+        body: JSON.stringify({ name, avatar_url: avatarUrl }),
       });
       const data = await res.json();
 
@@ -65,74 +63,62 @@ export function ProfileForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit} className="space-y-8">
       {/* Avatar Section */}
       <div className="flex items-center space-x-6">
         <div className="relative group">
-          <div className="w-24 h-24 rounded-full overflow-hidden bg-accent flex items-center justify-center border-4 border-background shadow-sm">
+          <div className="w-24 h-24 rounded-full overflow-hidden flex items-center justify-center border-[3px] border-accent/20 bg-accent/10 shadow-[0_0_20px_var(--accent-glow)] transition-all duration-500 group-hover:border-accent">
             {avatarUrl ? (
               <img src={avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
             ) : (
-              <span className="text-3xl text-muted-foreground font-semibold">
+              <span className="text-3xl text-accent font-semibold">
                 {name ? name.charAt(0).toUpperCase() : '?'}
               </span>
             )}
           </div>
-          {/* Avatar Upload Overlay (Visual only for now, upload logic would go here) */}
-          <label className="absolute inset-0 flex items-center justify-center bg-black/50 text-white rounded-full opacity-0 group-hover:opacity-100 cursor-pointer transition-opacity">
+          {/* Avatar Upload Overlay */}
+          <label className="absolute inset-0 flex items-center justify-center bg-black/50 text-white rounded-full opacity-0 group-hover:opacity-100 cursor-pointer transition-opacity backdrop-blur-sm">
             <Camera className="w-6 h-6" />
             <input type="file" className="hidden" accept="image/*" onChange={() => alert('Avatar upload implementation requires S3 setup.')} />
           </label>
         </div>
         <div>
-          <h4 className="text-sm font-medium text-foreground">Profile Picture</h4>
-          <p className="text-xs text-muted-foreground mt-1">JPG, GIF or PNG. 1MB max.</p>
+          <h4 className="text-lg font-medium text-foreground">Profile Picture</h4>
+          <p className="text-sm text-muted-foreground mt-1">JPG, GIF or PNG. 1MB max.</p>
         </div>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2">
-        <div className="space-y-2">
-          <label htmlFor="name" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-            Display Name
-          </label>
-          <input
-            id="name"
-            className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-            placeholder="John Doe"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-        </div>
-        <div className="space-y-2">
-          <label htmlFor="email" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-            Email Address
-          </label>
-          <input
-            id="email"
-            type="email"
-            required
-            className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-            placeholder="john@example.com"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </div>
+      <div className="space-y-3 max-w-md">
+        <label htmlFor="name" className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+          Display Name
+        </label>
+        <input
+          id="name"
+          className="input-glow"
+          placeholder="John Doe"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+        <p className="text-xs text-muted-foreground pt-1">
+          This is your public display name. It can be real or a pseudonym.
+        </p>
       </div>
 
       {message && (
-        <div className={`p-3 rounded-md text-sm font-medium ${message.includes('success') ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'}`}>
+        <div className={`p-4 rounded-xl text-sm font-medium max-w-md border ${message.includes('success') ? 'bg-green-500/10 border-green-500/20 text-green-500' : 'bg-red-500/10 border-red-500/20 text-red-500'}`}>
           {message}
         </div>
       )}
 
-      <div className="flex justify-end">
+      <div className="flex justify-start pt-4">
         <button
           type="submit"
           disabled={isLoading}
-          className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
+          className="btn-primary flex items-center justify-center"
+          style={{ background: 'var(--gradient-accent)' }}
         >
           {isLoading ? (
-            <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Saving...</>
+            <span className="flex items-center gap-2"><Loader2 className="w-4 h-4 animate-spin" /> Saving...</span>
           ) : (
             'Save Changes'
           )}

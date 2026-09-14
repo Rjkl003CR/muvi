@@ -291,17 +291,17 @@ export function TopNavbar() {
                 }}
               >
                 <User style={{ width: 16, height: 16 }} />
-                My Profile
+                View Profile
               </button>
               <button
                 className="profile-dropdown-item"
                 onClick={() => {
-                  router.push("/settings/account");
+                  router.push("/settings/profile");
                   setProfileOpen(false);
                 }}
               >
                 <Settings style={{ width: 16, height: 16 }} />
-                Settings
+                Account Details
               </button>
 
               <div className="profile-dropdown-divider" />
