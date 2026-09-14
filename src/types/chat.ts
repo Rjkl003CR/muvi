@@ -22,7 +22,7 @@ export interface ChatMessageData {
   channel_id: string;
   user_id: string;
   content: string;
-  movie_data: any | null; 
+  movie_data: any | null;
   attachment_url?: string | null;
   attachment_type?: 'image' | 'file' | null;
   created_at: string;
