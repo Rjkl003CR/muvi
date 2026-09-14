@@ -376,9 +376,6 @@ export function ShortcutsApp() {
             <h1 style={{ margin: 0, fontFamily: "var(--font-heading)", fontSize: "1.65rem", fontWeight: 800, color: "var(--text-primary)" }}>
               Shortcuts
             </h1>
-            <p style={{ margin: "2px 0 0", fontSize: "0.85rem", color: "var(--text-muted)", fontFamily: "var(--font-body)" }}>
-              Fast 1-click access to all your websites, apps, and accounts · Zero local storage
-            </p>
           </div>
         </div>
 

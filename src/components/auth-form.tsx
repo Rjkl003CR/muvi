@@ -379,7 +379,11 @@ export function AuthForm({ defaultMode = "signin" }: { defaultMode?: Mode }) {
       provider: "google",
       options: {
         scopes: "https://www.googleapis.com/auth/drive.file",
-        redirectTo: `${window.location.origin}/`,
+        redirectTo: `${window.location.origin}/api/auth/callback`,
+        queryParams: {
+          access_type: "offline",
+          prompt: "consent",
+        },
       },
     });
     if (error) {

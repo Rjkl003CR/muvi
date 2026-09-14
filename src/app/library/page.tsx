@@ -443,7 +443,28 @@ export default function LibraryPage() {
       const res = await fetch("/api/movies");
       if (!res.ok) throw new Error((await res.json().catch(()=>({}))).error||"Failed to fetch");
       const data = await res.json();
-      setMovies(data.movies||[]);
+      let fetchedMovies = data.movies || [];
+      if (fetchedMovies.length === 0) {
+        fetchedMovies = [
+          {
+            id: 'demo-1', title: 'Inception', drive_file_id: 'x', drive_view_url: '#', file_size: 2*1024*1024*1024,
+            mime_type: 'video/mp4', created_at: new Date().toISOString(), original_url: null, genres: ['Action', 'Sci-Fi'], release_year: 2010, imdb_rating: 8.8, poster_url: 'https://image.tmdb.org/t/p/w500/9gk7adHYeDvHkCSEqAvQNLV5Uge.jpg'
+          },
+          {
+            id: 'demo-2', title: 'The Dark Knight', drive_file_id: 'y', drive_view_url: '#', file_size: 1.5*1024*1024*1024,
+            mime_type: 'video/mp4', created_at: new Date().toISOString(), original_url: null, genres: ['Action', 'Crime'], release_year: 2008, imdb_rating: 9.0, poster_url: 'https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg'
+          },
+          {
+            id: 'demo-3', title: 'Interstellar', drive_file_id: 'z', drive_view_url: '#', file_size: 3*1024*1024*1024,
+            mime_type: 'video/mp4', created_at: new Date().toISOString(), original_url: null, genres: ['Adventure', 'Sci-Fi'], release_year: 2014, imdb_rating: 8.7, poster_url: 'https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg'
+          },
+          {
+            id: 'demo-4', title: 'Dune: Part Two', drive_file_id: 'a', drive_view_url: '#', file_size: 4*1024*1024*1024,
+            mime_type: 'video/mp4', created_at: new Date().toISOString(), original_url: null, genres: ['Adventure', 'Sci-Fi'], release_year: 2024, imdb_rating: 8.6, poster_url: 'https://image.tmdb.org/t/p/w500/1pdfLvkbY9ohJlCjQH2JGjjcNsV.jpg'
+          }
+        ];
+      }
+      setMovies(fetchedMovies);
     } catch (err: any) { setError(err.message||"Something went wrong"); }
     finally { setLoading(false); }
   }, []);
@@ -492,28 +513,20 @@ export default function LibraryPage() {
 
         {/* Header */}
         <div style={{ display:"flex",alignItems:"flex-end",justifyContent:"space-between",flexWrap:"wrap",gap:16,marginBottom:32 }}>
-          <div>
-            <div style={{ display:"flex",alignItems:"center",gap:10,marginBottom:8 }}>
-              <div style={{
-                width:42,height:42,borderRadius:12,
-                background:"var(--gradient-accent)",
-                display:"flex",alignItems:"center",justifyContent:"center",
-                boxShadow:"0 4px 18px rgba(240,100,73,0.3)",
-              }}>
-                <Film style={{ width:20,height:20,color:"white" }} />
-              </div>
-              <span style={{ fontSize:"0.7rem",fontWeight:700,letterSpacing:"0.15em",textTransform:"uppercase",color:"var(--accent)",fontFamily:"var(--font-heading)" }}>
-                Your Collection
-              </span>
+          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+            <div style={{
+              width:44,height:44,borderRadius:12,
+              background:"var(--gradient-accent)",
+              display:"flex",alignItems:"center",justifyContent:"center",
+              boxShadow:"0 4px 18px rgba(240,100,73,0.3)",
+            }}>
+              <Film style={{ width:22,height:22,color:"white" }} />
             </div>
-            <h1 style={{ margin:0,fontFamily:"var(--font-heading)",fontSize:"clamp(1.8rem,4vw,2.4rem)",fontWeight:800,color:"var(--text-primary)" }}>
-              Movie Library
-            </h1>
-            {!loading && (
-              <p style={{ margin:"4px 0 0",fontSize:"0.88rem",color:"var(--text-muted)",fontFamily:"var(--font-body)" }}>
-                {filteredMovies.length} of {movies.length} movie{movies.length!==1?"s":""}{hasFilters?" (filtered)":" in your collection"}
-              </p>
-            )}
+            <div>
+              <h1 style={{ margin:0,fontFamily:"var(--font-heading)",fontSize:"1.65rem",fontWeight:800,color:"var(--text-primary)" }}>
+                Movie Library
+              </h1>
+            </div>
           </div>
           <div style={{ display:"flex",alignItems:"center",gap:10 }}>
             <button onClick={fetchMovies} disabled={loading} className="btn-ghost"
@@ -537,6 +550,7 @@ export default function LibraryPage() {
 
         {/* Control Bar */}
         <div style={{
+          position: "relative", zIndex: 50,
           display:"flex",flexWrap:"wrap",gap:12,marginBottom:28,
           padding:"16px 20px",borderRadius:16,
           background:"var(--bg-card)",border:"1px solid var(--border-color)",
