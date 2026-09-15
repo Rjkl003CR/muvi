@@ -14,13 +14,15 @@ export function ProfileForm() {
   useEffect(() => {
     async function fetchProfile() {
       try {
-        const res = await fetch('/api/auth/me');
-        if (res.ok) {
-          const data = await res.json();
-          if (data.user) {
-            setName(data.user.name || '');
-            setAvatarUrl(data.user.avatar_url || '');
-          }
+        const { createClient } = await import('@/utils/supabase/client');
+        const supabase = createClient();
+        const { data: { user } } = await supabase.auth.getUser();
+        
+        if (user) {
+          const name = user.user_metadata?.name || '';
+          const avatarUrl = user.user_metadata?.avatar_url || '';
+          setName(name);
+          setAvatarUrl(avatarUrl);
         }
       } catch (e) {
         console.error('Failed to fetch profile', e);
