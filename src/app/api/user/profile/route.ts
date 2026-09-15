@@ -1,40 +1,30 @@
 import { NextResponse } from 'next/server';
-import { supabase, verifyToken } from '@/lib/auth';
-import { cookies } from 'next/headers';
+import { createClient } from '@/utils/supabase/server';
 
 export async function PUT(request: Request) {
   try {
-    const cookieStore = await cookies();
-    const token = cookieStore.get('access_token')?.value;
+    const supabase = await createClient();
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
 
-    if (!token) {
+    if (authError || !user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const payload = verifyToken(token);
-    if (!payload) {
-      return NextResponse.json({ error: 'Invalid or expired token' }, { status: 401 });
-    }
+    const { name, avatar_url } = await request.json();
 
-    const { name, email, avatar_url } = await request.json();
-
-    if (!email) {
-      return NextResponse.json({ error: 'Email is required' }, { status: 400 });
-    }
-
-    const { data: updatedUser, error: updateErr } = await supabase
-      .from('users')
-      .update({ name, email, avatar_url })
-      .eq('id', payload.sub)
-      .select('id, name, email, avatar_url, email_verified')
-      .single();
+    const { data: updatedData, error: updateErr } = await supabase.auth.updateUser({
+      data: {
+        name: name,
+        avatar_url: avatar_url
+      }
+    });
 
     if (updateErr) {
       console.error('Profile update error', updateErr);
-      return NextResponse.json({ error: 'Failed to update profile' }, { status: 500 });
+      return NextResponse.json({ error: `Failed to update profile: ${updateErr.message}` }, { status: 500 });
     }
 
-    return NextResponse.json({ success: true, user: updatedUser });
+    return NextResponse.json({ success: true, user: updatedData.user });
 
   } catch (error) {
     console.error('Update profile error', error);
